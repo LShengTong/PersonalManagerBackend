@@ -1,0 +1,13 @@
+spring:
+        application:
+                name: personal_manager
+        datasource:
+                url: jdbc:mysql://121.40.80.170:3306/personal_manager?useSSL=false&serverTimezone=UTC
+                username: developer
+                password: qqwwssdd123LST`
+                driver-class-name: com.mysql.cj.jdbc.Driver
+mybatis:
+        mapper-locations: classpath:mapper/*.xml
+        type-handlers-package: org.xuzhu.personal_manager.type_handle
+        configuration:
+                map-underscore-to-camel-case: true

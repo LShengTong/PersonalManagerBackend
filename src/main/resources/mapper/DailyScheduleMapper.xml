@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.xuzhu.personal_manager.mapper.DailyScheduleMapper">
+
+    <insert id="insertDailySchedules" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO daily_schedule (regular_schedule_id, time, date)
+        VALUES
+        <foreach collection="dailySchedules" item="dailySchedule" separator=",">
+            (#{dailySchedule.regularScheduleId}, #{dailySchedule.time}, #{dailySchedule.date})
+        </foreach>
+    </insert>
+
+    <update id="updateDailySchedules">
+        UPDATE daily_schedule
+        SET
+        regular_schedule_id = CASE id
+        <foreach collection="dailySchedules" item="item">
+            WHEN #{item.id} THEN #{item.regularScheduleId}
+        </foreach>
+        ELSE regular_schedule_id
+        END,
+        time = CASE id
+        <foreach collection="dailySchedules" item="item">
+            WHEN #{item.id} THEN #{item.time}
+        </foreach>
+        ELSE time
+        END
+        WHERE id IN
+        <foreach collection="dailySchedules" item="item" open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+    </update>
+
+    <select id="getDailySchedules">
+        SELECT * FROM daily_schedule WHERE id IN
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+</mapper>
